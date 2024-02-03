@@ -2,6 +2,7 @@
     <section class="post-item">
         <div class="post">
             <div>
+                <div>ID: <b>{{ post.id }}</b></div>
                 <div>Title: <b>{{ post.title }}</b></div>
                 <div>Description: {{ post.body }}</div>
             </div>
