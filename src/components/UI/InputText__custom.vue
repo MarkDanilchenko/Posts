@@ -1,5 +1,5 @@
 <template>
-    <input @input="updateInput" :value="modelValue" class="inputData" type="text">
+    <input @input="updateInput" class="inputData" type="text">
 </template>
 
 <script>

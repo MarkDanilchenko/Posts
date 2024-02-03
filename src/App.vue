@@ -1,18 +1,26 @@
 <template>
     <section class="app">
-        <PostForm @addPost="addPost" />
-        <PostList :posts="posts" @remove="removePost"/>
+        <h1>Posts list</h1>
+        <!-- modal PostForm -->
+        <Button__custom @click="showDialog__PostForm">Add post</Button__custom>
+        <Dialog__custom v-model:show="Dialog_postForm__visibility">
+            <PostForm @addPost="addPost" />
+        </Dialog__custom>
+        <!--  -->
+        <PostList :posts="posts" @remove="removePost" />
     </section>
 </template>
 
 <script>
 import PostList from './components/PostList.vue'
 import PostForm from './components/PostForm.vue'
+import Button__custom from './components/UI/Button__custom.vue';
 export default {
     name: 'App',
     components: {
         PostList,
-        PostForm
+        PostForm,
+        Button__custom
     },
     data() {
         return {
@@ -44,14 +52,19 @@ export default {
                     body: 'Django body'
                 }
             ],
+            Dialog_postForm__visibility: false
         }
     },
     methods: {
         addPost(post) {
             this.posts.push(post);
+            this.Dialog_postForm__visibility = false
         },
         removePost(post) {
             this.posts = this.posts.filter((i) => i.id !== post.id)
+        },
+        showDialog__PostForm() {
+            this.Dialog_postForm__visibility = !this.Dialog_postForm__visibility
         }
     }
 }

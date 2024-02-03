@@ -43,8 +43,6 @@ export default {
 <style scoped>
 form {
     padding: 15px;
-    border: 2px solid teal;
-    margin-top: 15px;
 }
 
 fieldset {
