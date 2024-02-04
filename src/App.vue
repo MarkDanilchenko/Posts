@@ -1,22 +1,31 @@
 <template>
     <section class="app">
         <h1 id="h1__title">Posts list</h1>
-        <!-- modal PostForm -->
         <div id="btnBlock">
+            <!-- Search -->
             <InputText__custom v-model="searchQuery" placeholder="Search..." />
+            <!-- Sort -->
             <div>
                 <h3>Sort by</h3>
                 <Sort__custom v-model="selectedSort" :options="sortOptions" />
             </div>
+            <!-- DialogShow -->
             <Button__custom @click="showDialog__PostForm">Add post</Button__custom>
+            <!-- Download posts -->
             <Button__custom @click="fetchPosts">Download posts</Button__custom>
         </div>
+        <!-- DialogModal -->
         <Dialog__custom v-model:show="Dialog_postForm__visibility">
             <PostForm @addPost="addPost" />
         </Dialog__custom>
-        <!--  -->
+        <!-- PostList -->
         <PostList v-if="!posts_loading" :posts="postSortAndSearch" @remove="removePost" />
         <div class="loading" v-else>Loading...</div>
+        <!-- Pagination via posts -->
+        <div class="pagination" v-if="!posts_loading">
+            <div class="pagination__item" :class="{ 'pagination__item__active': page === pageNumber }"
+                v-for="pageNumber in totalPages" :key="pageNumber" @click="changePage(pageNumber)">{{ pageNumber }}</div>
+        </div>
     </section>
 </template>
 
@@ -32,15 +41,18 @@ export default {
     data() {
         return {
             posts: [],
-            Dialog_postForm__visibility: false,
             posts_loading: true,
+            Dialog_postForm__visibility: false,
             selectedSort: '',
             sortOptions: [
                 { value: 'title', name: 'By title' },
                 { value: 'body', name: 'By description' },
                 { value: 'id', name: 'By ID' },
             ],
-            searchQuery: ''
+            searchQuery: '',
+            page: 1,
+            limit: 5,
+            totalPages: 0
         }
     },
     methods: {
@@ -57,13 +69,14 @@ export default {
         async fetchPosts() {
             this.posts_loading = true
             setTimeout(() => {
-                fetch('https://jsonplaceholder.typicode.com/posts?_limit=10', {
+                fetch('https://jsonplaceholder.typicode.com/posts?' + new URLSearchParams({ _page: this.page, _limit: this.limit }), {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: null,
                 }).then((response) => {
+                    this.totalPages = Math.ceil(response.headers.get('x-total-count') / this.limit)
                     return response.json()
                 }).then((data) => {
                     this.posts = data
@@ -71,7 +84,11 @@ export default {
                 }).catch((error) => {
                     alert(error.message)
                 })
-            }, 3000);
+            }, 2000);
+        },
+        changePage(pageNumber) {
+            this.page = pageNumber
+            this.fetchPosts()
         }
     },
     mounted() {
@@ -120,7 +137,7 @@ export default {
     margin-top: 15px;
 }
 
-#btnBlock > * {
+#btnBlock>* {
     margin-right: 15px;
 }
 
@@ -146,5 +163,32 @@ export default {
     font-weight: bold;
     font-size: 24px;
     color: teal;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.pagination__item {
+    margin-right: 10px;
+    border: 2px solid teal;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    width: 25px;
+}
+
+.pagination__item:hover {
+    cursor: pointer;
+    background-color: teal;
+    color: white;
+}
+
+.pagination__item__active {
+    background-color: teal;
+    color: white;
 }
 </style>

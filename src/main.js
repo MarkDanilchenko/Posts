@@ -10,4 +10,5 @@ UIcomponents.forEach((component) => {
     app.component(component.name, component);
 });
 
+// mount main App component into index.html
 app.mount('#app');

@@ -12,15 +12,11 @@
 </template>
 
 <script>
-// import Button__custom from './UI/Button__custom.vue' ---> Button__custom is registered globally
 export default {
     name: 'PostItem',
-    components: {
-        // Button__custom
-    },
     props: ['post'],
     methods: {
-        
+
     }
 }
 </script>
