@@ -13,7 +13,7 @@
             <PostForm @addPost="addPost" />
         </Dialog__custom>
         <!--  -->
-        <PostList v-if="!posts_loading" :posts="posts" @remove="removePost" />
+        <PostList v-if="!posts_loading" :posts="postSort" @remove="removePost" />
         <div class="loading" v-else>Loading...</div>
     </section>
 </template>
@@ -76,7 +76,15 @@ export default {
     },
     computed: {
         postSort() {
-            return [...this.posts].sort((a, b) => { })
+            return [...this.posts].sort((a, b) => {
+                if (this.selectedSort === 'title') {
+                    return a.title.localeCompare(b.title)
+                } else if (this.selectedSort === 'body') {
+                    return a.body.localeCompare(b.body)
+                } else if (this.selectedSort === 'id') {
+                    return a.id - b.id
+                }
+            })
         }
     },
     // watch: {
