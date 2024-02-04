@@ -3,17 +3,19 @@
         <h1 id="h1__title">Posts list</h1>
         <!-- modal PostForm -->
         <div id="btnBlock">
+            <InputText__custom v-model="searchQuery" placeholder="Search..." />
             <div>
-                <Button__custom @click="showDialog__PostForm">Add post</Button__custom>
-                <Sort__custom v-model="selectedSort" :options="sortOptions" style="margin-top: 15px;" />
+                <h3>Sort by</h3>
+                <Sort__custom v-model="selectedSort" :options="sortOptions" />
             </div>
+            <Button__custom @click="showDialog__PostForm">Add post</Button__custom>
             <Button__custom @click="fetchPosts">Download posts</Button__custom>
         </div>
         <Dialog__custom v-model:show="Dialog_postForm__visibility">
             <PostForm @addPost="addPost" />
         </Dialog__custom>
         <!--  -->
-        <PostList v-if="!posts_loading" :posts="postSort" @remove="removePost" />
+        <PostList v-if="!posts_loading" :posts="postSortAndSearch" @remove="removePost" />
         <div class="loading" v-else>Loading...</div>
     </section>
 </template>
@@ -37,7 +39,8 @@ export default {
                 { value: 'title', name: 'By title' },
                 { value: 'body', name: 'By description' },
                 { value: 'id', name: 'By ID' },
-            ]
+            ],
+            searchQuery: ''
         }
     },
     methods: {
@@ -85,6 +88,9 @@ export default {
                     return a.id - b.id
                 }
             })
+        },
+        postSortAndSearch() {
+            return this.postSort.filter((post) => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
         }
     },
     // watch: {
@@ -114,7 +120,7 @@ export default {
     margin-top: 15px;
 }
 
-#btnBlock>* {
+#btnBlock > * {
     margin-right: 15px;
 }
 
