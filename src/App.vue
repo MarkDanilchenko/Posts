@@ -3,26 +3,45 @@
         <h1 id="h1__title">Posts list</h1>
         <div id="btnBlock">
             <!-- Search -->
+            <!-- Search -->
+            <!-- Search -->
             <InputText__custom v-model="searchQuery" placeholder="Search..." />
+            <!-- Sort -->
+            <!-- Sort -->
             <!-- Sort -->
             <div>
                 <h3>Sort by</h3>
                 <Sort__custom v-model="selectedSort" :options="sortOptions" />
             </div>
             <!-- DialogShow -->
+            <!-- DialogShow -->
+            <!-- DialogShow -->
             <Button__custom @click="showDialog__PostForm">Add post</Button__custom>
+            <!-- Download posts -->
+            <!-- Download posts -->
             <!-- Download posts -->
             <Button__custom @click="fetchPosts">Download posts</Button__custom>
         </div>
+        <!-- DialogModal -->
+        <!-- DialogModal -->
         <!-- DialogModal -->
         <Dialog__custom v-model:show="Dialog_postForm__visibility">
             <PostForm @addPost="addPost" />
         </Dialog__custom>
         <!-- PostList -->
+        <!-- PostList -->
+        <!-- PostList -->
         <PostList v-if="!posts_loading" :posts="postSortAndSearch" @remove="removePost" />
         <div class="loading" v-else>Loading...</div>
+        <!-- Dynamic posts band loading -->
+        <!-- Dynamic posts band loading -->
+        <!-- Dynamic posts band loading -->
+        <div v-if="!postsEnd" ref="observer" class="observer"></div>
         <!-- Pagination via posts -->
-        <Pagination__custom v-if="!posts_loading" :totalPages="totalPages" :page="page" @changePage="changePage" />
+        <!-- Pagination via posts -->
+        <!-- Pagination via posts -->
+        <!-- <Pagination__custom v-if="!posts_loading" :totalPages="totalPages" :page="page" @changePage="changePage" /> -->
+        <div v-if="postsEnd" id="postsEnd">No more posts</div>
     </section>
 </template>
 
@@ -49,7 +68,8 @@ export default {
             searchQuery: '',
             page: 1,
             limit: 10,
-            totalPages: 0
+            totalPages: 0,
+            postsEnd: false
         }
     },
     methods: {
@@ -73,7 +93,7 @@ export default {
                     },
                     body: null,
                 }).then((response) => {
-                    // totalPages count for pagination
+                    // totalPages count for pagination usage
                     this.totalPages = Math.ceil(response.headers.get('x-total-count') / this.limit)
                     return response.json()
                 }).then((data) => {
@@ -84,13 +104,47 @@ export default {
                 })
             }, 2000);
         },
-        changePage(pageNumber) {
-            this.page = pageNumber
-            this.fetchPosts()
-        }
+        // Dynamic posts band loading
+        async fetchPostsBand() {
+            fetch('https://jsonplaceholder.typicode.com/posts?' + new URLSearchParams({ _page: this.page, _limit: this.limit }), {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: null,
+            }).then((response) => {
+                // totalPages count for pagination usage
+                this.totalPages = Math.ceil(response.headers.get('x-total-count') / this.limit)
+                return response.json()
+            }).then((data) => {
+                this.posts = [...this.posts, ...data]
+            }).catch((error) => {
+                alert(error.message)
+            });
+        },
+        // changePage(pageNumber) {
+        //     this.page = pageNumber
+        //     this.fetchPosts()
+        // }
     },
     mounted() {
         this.fetchPosts();
+        // Dynamic posts band loading
+        const options = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 1.0
+        }
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && this.page < this.totalPages) {
+                this.page += 1
+                this.fetchPostsBand();
+            } else if (this.page === this.totalPages) {
+                this.postsEnd = true
+
+            }
+        });
+        observer.observe(this.$refs.observer)
     },
     computed: {
         postSort() {
@@ -158,6 +212,20 @@ export default {
 
 #h1__title {
     text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    color: teal;
+}
+
+.observer {
+    height: 30px;
+}
+
+#postsEnd {
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
     font-size: 24px;
     color: teal;
