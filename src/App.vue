@@ -22,10 +22,7 @@
         <PostList v-if="!posts_loading" :posts="postSortAndSearch" @remove="removePost" />
         <div class="loading" v-else>Loading...</div>
         <!-- Pagination via posts -->
-        <div class="pagination" v-if="!posts_loading">
-            <div class="pagination__item" :class="{ 'pagination__item__active': page === pageNumber }"
-                v-for="pageNumber in totalPages" :key="pageNumber" @click="changePage(pageNumber)">{{ pageNumber }}</div>
-        </div>
+        <Pagination__custom v-if="!posts_loading" :totalPages="totalPages" :page="page" @changePage="changePage" />
     </section>
 </template>
 
@@ -51,7 +48,7 @@ export default {
             ],
             searchQuery: '',
             page: 1,
-            limit: 5,
+            limit: 10,
             totalPages: 0
         }
     },
@@ -76,6 +73,7 @@ export default {
                     },
                     body: null,
                 }).then((response) => {
+                    // totalPages count for pagination
                     this.totalPages = Math.ceil(response.headers.get('x-total-count') / this.limit)
                     return response.json()
                 }).then((data) => {
@@ -163,32 +161,5 @@ export default {
     font-weight: bold;
     font-size: 24px;
     color: teal;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 15px;
-}
-
-.pagination__item {
-    margin-right: 10px;
-    border: 2px solid teal;
-    border-radius: 5px;
-    padding: 5px;
-    text-align: center;
-    width: 25px;
-}
-
-.pagination__item:hover {
-    cursor: pointer;
-    background-color: teal;
-    color: white;
-}
-
-.pagination__item__active {
-    background-color: teal;
-    color: white;
 }
 </style>
