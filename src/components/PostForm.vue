@@ -3,7 +3,7 @@
         <form action="">
             <fieldset>
                 <legend>Add posts!</legend>
-                <InputText__custom v-model="title" placeholder="Title"></InputText__custom>
+                <InputText__custom v-model="title" v-focus placeholder="Title"></InputText__custom>
                 <InputText__custom v-model="body" placeholder="Description"></InputText__custom>
                 <Button__custom type="submit" id="postForm__btn" @click.prevent="createPost">Add</Button__custom>
             </fieldset>

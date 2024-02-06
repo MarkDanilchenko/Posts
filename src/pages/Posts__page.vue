@@ -5,7 +5,7 @@
             <!-- Search -->
             <!-- Search -->
             <!-- Search -->
-            <InputText__custom v-model="searchQuery" placeholder="Search..." />
+            <InputText__custom v-model="searchQuery" v-focus placeholder="Search..." />
             <!-- Sort -->
             <!-- Sort -->
             <!-- Sort -->
