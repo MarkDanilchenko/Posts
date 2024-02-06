@@ -74,7 +74,7 @@ export default {
     },
     methods: {
         addPost(post) {
-            this.posts.push(post);
+            this.posts.unshift(post);
             this.Dialog_postForm__visibility = false
         },
         removePost(post) {
