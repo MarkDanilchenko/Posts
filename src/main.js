@@ -1,14 +1,15 @@
 import { createApp } from 'vue';
-import App from './App.vue';
+import App from '@/App.vue';
+import router from '@/router/router.js';
 
 // custom UI components from src/components/UI/
-import UIcomponents from './components/UI';
+import UIcomponents from '@/components/UI/index.js';
 
 const app = createApp(App);
 
 UIcomponents.forEach((component) => {
-    app.component(component.name, component);
+	app.component(component.name, component);
 });
 
 // mount main App component into index.html
-app.mount('#app');
+app.use(router).mount('#app');
