@@ -3,7 +3,8 @@
         <div v-if="posts.length === 0" class="no-posts">No posts</div>
         <div v-else>
             <transition-group name="postList" tag="div">
-                <PostItem v-for="post in posts" :key="post.id" :post="post" @remove="$emit('remove', post)" />
+                <!-- <PostItem v-for="post in posts" :key="post.id" :post="post" @remove="$emit('remove', post)" /> -->
+                <PostItem v-for="post in posts" :key="post.id" :post="post" />
             </transition-group>
         </div>
     </section>

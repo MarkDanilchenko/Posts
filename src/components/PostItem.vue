@@ -7,7 +7,8 @@
                 <div>Description: {{ post.body }}</div>
             </div>
             <div class="postItem__buttons">
-                <Button__custom @click="$emit('remove', post)">Delete</Button__custom>
+                <!-- <Button__custom @click="$emit('remove', post)">Delete</Button__custom> -->
+                <Button__custom @click="removePost(post.id)">Delete</Button__custom>
                 <Button__custom @click="$router.push(`/posts/${post.id}`)">More</Button__custom>
             </div>
         </div>
@@ -15,13 +16,15 @@
 </template>
 
 <script>
-import Button__custom from './UI/Button__custom.vue';
-
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 export default {
     name: 'PostItem',
     props: ['post'],
-    methods: {},
-    components: { Button__custom }
+    methods: {
+        ...mapActions({
+            removePost: 'posts/removePost'
+        })
+    },
 }
 </script>
 

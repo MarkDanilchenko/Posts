@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from '@/router/router.js';
+import store from '@/store/index.js';
 
 // custom UI components from src/components/UI/
 import UIcomponents from '@/components/UI/index.js';
@@ -19,4 +20,4 @@ directives.forEach((directive) => {
 });
 
 // mount main App component into index.html
-app.use(router).mount('#app');
+app.use(router).use(store).mount('#app');

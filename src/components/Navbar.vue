@@ -6,6 +6,7 @@
             <router-link to="/about">About</router-link>
             <router-link to="/posts">Posts</router-link> -->
             <Button__custom @click="$router.push('/posts')">Posts</Button__custom>
+            <Button__custom @click="$router.push('/posts-vuex')">Posts_Vuex</Button__custom>
             <Button__custom @click="$router.push('/about')">About</Button__custom>
         </div>
     </div>

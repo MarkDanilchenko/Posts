@@ -1,17 +1,19 @@
 <template>
     <section class="app">
-        <h1 id="h1__title">Posts list</h1>
+        <h1 id="h1__title">Posts list via <u>vuex</u></h1>
         <div id="btnBlock">
             <!-- Search -->
             <!-- Search -->
             <!-- Search -->
-            <InputText__custom v-model="searchQuery" v-focus placeholder="Search..." />
+            <!-- <InputText__custom v-model="searchQuery" v-focus placeholder="Search..." /> -->
+            <InputText__custom :modelValue="searchQuery" @update:modelValue="setSearchQuery" v-focus placeholder="Search..." />
             <!-- Sort -->
             <!-- Sort -->
             <!-- Sort -->
             <div>
                 <h3>Sort by</h3>
-                <Sort__custom v-model="selectedSort" :options="sortOptions" />
+                <!-- <Sort__custom v-model="selectedSort" :options="sortOptions" /> -->
+                <Sort__custom :modelValue="selectedSort" @update:modelValue="setSelectedSort" :options="sortOptions" />
             </div>
             <!-- DialogShow -->
             <!-- DialogShow -->
@@ -31,7 +33,8 @@
         <!-- PostList -->
         <!-- PostList -->
         <!-- PostList -->
-        <PostList v-if="!posts_loading" :posts="postSortAndSearch" @remove="removePost" />
+        <!-- <PostList v-if="!posts_loading" :posts="postSortAndSearch" @remove="removePost" /> -->
+        <PostList v-if="!posts_loading" :posts="postSortAndSearch" />
         <div class="loading" v-else>Loading...</div>
         <!-- Dynamic posts band loading -->
         <!-- Dynamic posts band loading -->
@@ -46,8 +49,9 @@
 </template>
 
 <script>
-import PostList from '@/components/PostList.vue'
-import PostForm from '@/components/PostForm.vue'
+import PostList from '@/components/PostList.vue';
+import PostForm from '@/components/PostForm.vue';
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
     name: 'App',
     components: {
@@ -56,76 +60,30 @@ export default {
     },
     data() {
         return {
-            posts: [],
-            posts_loading: true,
+            // VUEX used
+            // VUEX used
+            // VUEX used
             Dialog_postForm__visibility: false,
-            selectedSort: '',
-            sortOptions: [
-                { value: 'title', name: 'By title' },
-                { value: 'body', name: 'By description' },
-                { value: 'id', name: 'By ID' },
-            ],
-            searchQuery: '',
-            page: 1,
-            limit: 10,
-            totalPages: 0,
-            postsEnd: false
         }
     },
     methods: {
+        ...mapMutations({
+            setPage: 'posts/setPage',
+            setPostsEnd: 'posts/setPostsEnd',
+            setSearchQuery: 'posts/setSearchQuery',
+            setSelectedSort: 'posts/setSelectedSort',
+        }),
+        ...mapActions({
+            fetchPosts: 'posts/fetchPosts',
+            fetchPostsBand: 'posts/fetchPostsBand'
+        }),
         addPost(post) {
             this.posts.unshift(post);
             this.Dialog_postForm__visibility = false
         },
-        removePost(post) {
-            this.posts = this.posts.filter((i) => i.id !== post.id)
-        },
         showDialog__PostForm() {
             this.Dialog_postForm__visibility = !this.Dialog_postForm__visibility
         },
-        async fetchPosts() {
-            this.posts_loading = true
-            setTimeout(() => {
-                fetch('https://jsonplaceholder.typicode.com/posts?' + new URLSearchParams({ _page: this.page, _limit: this.limit }), {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: null,
-                }).then((response) => {
-                    // totalPages count for pagination usage
-                    this.totalPages = Math.ceil(response.headers.get('x-total-count') / this.limit)
-                    return response.json()
-                }).then((data) => {
-                    this.posts = data
-                    this.posts_loading = false
-                }).catch((error) => {
-                    alert(error.message)
-                })
-            }, 2000);
-        },
-        // Dynamic posts band loading
-        async fetchPostsBand() {
-            fetch('https://jsonplaceholder.typicode.com/posts?' + new URLSearchParams({ _page: this.page, _limit: this.limit }), {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: null,
-            }).then((response) => {
-                // totalPages count for pagination usage
-                this.totalPages = Math.ceil(response.headers.get('x-total-count') / this.limit)
-                return response.json()
-            }).then((data) => {
-                this.posts = [...this.posts, ...data]
-            }).catch((error) => {
-                alert(error.message)
-            });
-        },
-        // changePage(pageNumber) {
-        //     this.page = pageNumber
-        //     this.fetchPosts()
-        // }
     },
     mounted() {
         this.fetchPosts();
@@ -137,29 +95,30 @@ export default {
         }
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && this.page < this.totalPages) {
-                this.page += 1
+                this.setPage(this.page + 1);
                 this.fetchPostsBand();
             } else if (this.page === this.totalPages) {
-                this.postsEnd = true
+                this.setPostsEnd(true);
             }
         });
         observer.observe(this.$refs.observer)
     },
     computed: {
-        postSort() {
-            return [...this.posts].sort((a, b) => {
-                if (this.selectedSort === 'title') {
-                    return a.title.localeCompare(b.title)
-                } else if (this.selectedSort === 'body') {
-                    return a.body.localeCompare(b.body)
-                } else if (this.selectedSort === 'id') {
-                    return a.id - b.id
-                }
-            })
-        },
-        postSortAndSearch() {
-            return this.postSort.filter((post) => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
-        }
+        ...mapState({
+            posts: state => state.posts.posts,
+            posts_loading: state => state.posts.posts_loading,
+            selectedSort: state => state.posts.selectedSort,
+            sortOptions: state => state.posts.sortOptions,
+            searchQuery: state => state.posts.searchQuery,
+            page: state => state.posts.page,
+            limit: state => state.posts.limit,
+            totalPages: state => state.posts.totalPages,
+            postsEnd: state => state.posts.postsEnd,
+        }),
+        ...mapGetters({
+            postSort: 'posts/postSort',
+            postSortAndSearch: 'posts/postSortAndSearch'
+        })
     },
     // watch: {
     //     selectedSort: {

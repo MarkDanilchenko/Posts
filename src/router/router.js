@@ -20,7 +20,12 @@ const routes = [
         path: '/posts/:id',
         name: 'postItem__page',
         component: () => import('@/pages/PostItem__page.vue'),
-    }
+    },
+    {
+        path: '/posts-vuex',
+        name: 'posts__page_vuex',
+        component: () => import('@/pages/Posts__page_vuex.vue'),
+    },
 ];
 
 const router = VueRouter.createRouter({

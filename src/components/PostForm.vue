@@ -12,12 +12,8 @@
 </template>
 
 <script>
-// import Button__custom from './UI/Button__custom.vue' ---> Button__custom is registered globally
 export default {
     name: 'PostForm',
-    components: {
-        // Button__custom
-    },
     data() {
         return {
             title: '',
