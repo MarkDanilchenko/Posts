@@ -1,10 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from '@/router/router.js';
 import store from '@/store/index.js';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '@/assets/scss/styles.scss';
+import '@/assets/scss/index.scss';
+import '@/assets/js/index.js';
+
+// jQuery usage globally
+window.$ = window.jQuery = require('jquery');
 
 // custom UI components from src/components/UI/
 import UIcomponents from '@/components/UI/index.js';

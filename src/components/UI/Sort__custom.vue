@@ -1,7 +1,7 @@
 <template>
-    <select name="" id="" @change="$emit('update:modelValue', $event.target.value)">
-        <option disabled selected value="">Choose from the list</option>
-        <option v-for="i in options" :key="i.value" :value="i.value">{{ i.name }}</option>
+    <select name="" id="" class="form-select" @change="$emit('update:modelValue', $event.target.value)">
+        <option disabled selected value="">Choose sort option...</option>
+        <option v-for="i in sortOptions" :key="i.value" :value="i.value">{{ i.name }}</option>
     </select>
 </template>
 
@@ -12,7 +12,7 @@ export default {
         modelValue: {
             type: String
         },
-        options: {
+        sortOptions: {
             type: Array,
             default: () => []
         }

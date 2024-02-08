@@ -1,5 +1,5 @@
 <template>
-    <input @input="updateInput" class="inputData" type="text">
+    <input @input="updateInput" class="form-control" type="text" placeholder="Search..." aria-label="Search">
 </template>
 
 <script>
@@ -14,11 +14,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.inputData {
-    margin-top: 15px;
-    padding: 15px;
-    border: 2px solid teal;
-    border-radius: 5px;
-}
-</style>
+<style scoped></style>

@@ -1,3 +1,3 @@
-import VFocus from '@/directives/VFocus.js';
+import vFocusCustom from '@/directives/VFocus.js';
 
-export default [VFocus];
+export default [vFocusCustom];

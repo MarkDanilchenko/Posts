@@ -1,5 +1,5 @@
 <template>
-    <button class="btn__custom">
+    <button class="btn btn-outline-custom-green">
         <slot></slot>
     </button>
 </template>
@@ -10,17 +10,5 @@ export default {
 }
 </script>
 
-<style scoped>
-.btn__custom {
-    margin-top: 15px;
-    padding: 15px;
-    background-color: teal;
-    border: 2px solid black;
-    border-radius: 5px;
-}
-
-.btn__custom:hover {
-    background-color: rgb(0, 0, 0);
-    color: white;
-}
+<style scoped lang="scss">
 </style>

@@ -1,5 +1,13 @@
 <template>
     <div class="d-flex flex-column align-items-center justify-content-center">
+        <nav aria-label="breadcrumb" class="my-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <router-link to="/">Main</router-link>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">404 Not Found</li>
+            </ol>
+        </nav>
         <!-- .dot animation -->
         <!-- .dot animation -->
         <!-- .dot animation -->
@@ -104,7 +112,12 @@
                     </div>
                 </div>
                 <div class="project-name">
-                    <p>&#9995; Hello on <span class="text-green"><i>main</i></span> page</p>
+                    <p>
+                        <span class="text-green">404</span>
+                        <br>
+                        Page <br>
+                        <span class="text-green">Not Found</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -126,5 +139,4 @@ p {
     font-size: 50px;
     line-height: 1.5;
 }
-
 </style>

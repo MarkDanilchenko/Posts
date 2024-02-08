@@ -1,11 +1,13 @@
 <template>
     <section class="post-list">
-        <div v-if="posts.length === 0" class="no-posts">No posts</div>
-        <div v-else>
-            <transition-group name="postList" tag="div">
-                <!-- <PostItem v-for="post in posts" :key="post.id" :post="post" @remove="$emit('remove', post)" /> -->
-                <PostItem v-for="post in posts" :key="post.id" :post="post" />
-            </transition-group>
+        <div v-if="posts.length === 0" class="posts__empty d-flex justify-content-center align-items-center">No any post...
+        </div>
+        <div v-else class="row d-flex justify-content-center">
+            <div class="col-lg-8 col-md-10 col-12">
+                <transition-group name="postList" tag="div">
+                    <PostItem v-for="post in posts" :key="post.id" :post="post" />
+                </transition-group>
+            </div>
         </div>
     </section>
 </template>
@@ -18,26 +20,22 @@ export default {
         PostItem
     },
     props: ['posts'],
-    data() {
-    }
-
 }
 </script>
 
-<style scoped>
-.no-posts {
-    padding: 15px;
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 24px;
-    color: teal;
+<style scoped lang="scss">
+@import '@/assets/scss/colors.scss';
+
+.posts__empty {
+    position: relative;
+    top: 10vh;
+    color: $green-color;
+    font-weight: 700;
+    font-size: 32px;
+    text-shadow: 0px 0px 10px $green-color;
 }
 
 .postList-item {
-    display: inline-block;
     margin-right: 10px;
 }
 
@@ -52,8 +50,8 @@ export default {
     transform: translateX(100px);
 }
 
- .postList-leave-from {
-    box-shadow: 0px 0px 5px 5px teal;
+.postList-leave-from {
+    box-shadow: -10px 0px 0px 0px rgb(255, 0, 0);
 }
 
 .postList-move {

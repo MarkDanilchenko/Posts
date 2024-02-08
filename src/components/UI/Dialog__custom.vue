@@ -7,10 +7,10 @@
 </template>
 
 <script>
-import toggleMixin from '@/mixins/toggleMixin.js';
+import showDialog_mixin from '@/mixins/showDialog_mixin.js';
 export default {
     name: 'Dialog__custom',
-    mixins: [toggleMixin],
+    mixins: [showDialog_mixin],
 }
 </script>
 

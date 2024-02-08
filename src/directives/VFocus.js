@@ -1,7 +1,7 @@
 // this custom directive is used to focus an element
 
 export default {
-    name: 'focus',
+    name: 'focus-custom',
     mounted(el) {
         el.focus();
     },
