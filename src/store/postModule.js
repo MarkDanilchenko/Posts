@@ -130,28 +130,46 @@ export const postModule = {
 		},
 		async fetchPostItem({ commit, state }) {
 			setTimeout(() => {
-				fetch('https://jsonplaceholder.typicode.com/posts/' + state.single_post_id, {
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: null,
-				})
-					.then((response) => {
-						if (response.status === 404) {
-							commit('setSinglePost', null);
+				if (state.single_post_id <= 100) {
+					fetch('https://jsonplaceholder.typicode.com/posts/' + state.single_post_id, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: null,
+					})
+						.then((response) => {
+							if (response.status === 404) {
+								commit('setSinglePost', null);
+								commit('setSinglePostLoading', false);
+								return;
+							}
+							return response.json();
+						})
+						.then((data) => {
+							commit('setSinglePost', data);
 							commit('setSinglePostLoading', false);
-							return;
-						}
-						return response.json();
-					})
-					.then((data) => {
-						commit('setSinglePost', data);
-						commit('setSinglePostLoading', false);
-					})
-					.catch((error) => {
-						alert(error.message);
+						})
+						.catch((error) => {
+							alert(error.message);
+						});
+				} else {
+					let IDs = [];
+					state.posts.forEach((post) => {
+						IDs.push(post.id);
 					});
+					if (IDs.includes(state.single_post_id)) {
+						commit(
+							'setSinglePost',
+							state.posts.filter((post) => post.id == state.single_post_id)[0]
+						);
+						commit('setSinglePostLoading', false);
+					} else {
+						commit('setSinglePost', null);
+						commit('setSinglePostLoading', false);
+						return;
+					}
+				}
 			}, 1000);
 		},
 	},

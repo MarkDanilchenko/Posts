@@ -13,7 +13,7 @@
             <h5 class="text-center"><b>Title:</b> "{{ single_post.title }}"</h5>
             <h5><b>Description:</b> <br> <span class="text-small">{{ postDescriptionStartsWithCapital }}</span></h5>
             <hr>
-            <p class="text-center text-small text-muted mb-0">All information about this post is available on the
+            <p v-if="single_post.id <= 100" class="text-center text-small text-muted mb-0">All information about this post is available on the
                 https://jsonplaceholder.typicode.com</p>
             <div class="d-flex justify-content-end">
                 <Button__custom class="mt-3" @click="$router.push('/posts')">Back</Button__custom>
@@ -51,7 +51,7 @@ export default {
         }
     },
     mounted() {
-        this.setSinglePostId(this.$route.params.id);
+        this.setSinglePostId(Number(this.$route.params.id));
         this.setSinglePostLoading(true);
         this.setSinglePost(null);
         this.fetchPostItem();
