@@ -1,16 +1,11 @@
 version: '3.1'
 
 services:
-    client:
+    webserver:
         restart: always
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: Client
-        command: sh -c 'npm run serve'
+        container_name: webserver
         ports:
-            - 8081:8080
-        networks:
-            - frontend
-networks:
-    frontend:
+            - "8081:80"
