@@ -1,13 +1,11 @@
 ## Description
 
-This is a project 'IT_Blog' using:
+This is a project 'Posts' using:
 
-- MySQL;
-- Django Rest Framework;
-- NuxtJS (Nuxt2);
-- Bootstrap;
+- VueJS (Vue3);
+- Bootstrap5;
 - Webpack;
-- Docker;
+- Docker and Compose;
 - CSS/SCSS/HTML.
 
 ## Launch instructions
@@ -58,58 +56,33 @@ This is a project 'IT_Blog' using:
 
 **p.s.:**
 
---> **error.log**: contains **backend-server error messages** that may cause the application to be interrupted or lead to undesirable results.
-
---> **error.log** is available in root folder after successfull app launch.
+--> ...
 
 ### Screenshots
 
 1. *Main page (white & dark themes)*
 
-![Main page(white theme)](screenshots/ScrShot_1.png)
-![Main page(dark theme)](screenshots/ScrShot_2.png)
-  
-2. *Sign Up form*
+![Main page(white theme)](screenshots/ScrShot_2.png)
+![Main page(dark theme)](screenshots/ScrShot_1.png)
+
+2. *Main posts page and dynamic search*
+
+![Main page & dynamic search](screenshots/ScrShot_3.png)
+
+3. *Three sort options*
+
+![Sort options](screenshots/ScrShot_4.png)
+
+4. *Add Your own new posts with modal*
+![Add new post: modal](screenshots/ScrShot_5.png)
+
+6. *Post detailed info*
+![Post detailed info](screenshots/ScrShot_6.png)
+
+7. *Mobile look like*
 
 <div align="center">
-  <img src="screenshots/ScrShot_3.png" width="100%" height="100%" alt='Sign up form'>
-</div>
-
-3. *Forms validation in real time input*
-
-![Sign In form](screenshots/ScrShot_4.png)
-
-4. *Sign In form*
-
-![Post details](screenshots/ScrShot_5.png)
-
-5. *Main page (authenticated User)*
-![Main page (authenticated User)](screenshots/ScrShot_6.png)
-
-6. *Feedback page*
-![Feedback page](screenshots/ScrShot_7.png)
-
-7. *Search result page*
-![Search result page](screenshots/ScrShot_8.png)
-
-8. *Tags navigation page*
-![Tags navigation page](screenshots/ScrShot_9.png)
-
-9. *Comments block for authenticated and not authenticated Users*
-
-![Comments block - Auth. Users](screenshots/ScrShot_10.png)
-![Comments block - Not Auth. Users](screenshots/ScrShot_11.png)
-
-10. *Sign Out page*
-
-![Sign Out page](screenshots/ScrShot_12.png)
-
-11. *Mobile look like*
-
-<div align="center">
-  <img src="screenshots/ScrShot_13.png" width="50%" height="50%" alt='Mobile look 1'>
-  <img src="screenshots/ScrShot_14.png" width="50%" height="50%" alt='Mobile look 2'>
-  <img src="screenshots/ScrShot_15.png" width="50%" height="50%" alt='Mobile look 3'>
-  <img src="screenshots/ScrShot_16.png" width="50%" height="50%" alt='Mobile look 4'>
-  <img src="screenshots/ScrShot_17.png" width="50%" height="50%" alt='Mobile look 5'>
+  <img src="screenshots/ScrShot_7.png" width="50%" height="50%" alt='Mobile look 1'>
+  <img src="screenshots/ScrShot_8.png" width="50%" height="50%" alt='Mobile look 2'>
+  <img src="screenshots/ScrShot_9.png" width="50%" height="50%" alt='Mobile look 3'>
 </div>
