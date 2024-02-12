@@ -7,7 +7,6 @@
                         <router-link to="/">Main</router-link>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">Posts</li>
-
                 </ol>
             </nav>
         </div>
@@ -17,7 +16,6 @@
                 <div class="bottom" aria-hidden="true">Posts'</div>
             </section>
         </div>
-
         <div class="row d-flex justify-content-center">
             <div class="row d-flex justify-content-md-center justify-content-end col-lg-8 col-md-10 col-12">
                 <!-- Search -->
@@ -38,7 +36,8 @@
                 <!-- DialogShow -->
                 <!-- DialogShow -->
                 <div class="col-md-2 col-3 m-0 p-0 px-1" style="width: fit-content;">
-                    <Button__custom>Add post</Button__custom>
+                    <Button__custom type="button" data-bs-toggle="modal" data-bs-target="#addPostModal">
+                        Add post</Button__custom>
                 </div>
                 <!-- Download posts -->
                 <!-- Download posts -->
@@ -49,12 +48,32 @@
             </div>
 
         </div>
-        <!-- DialogModal -->
-        <!-- DialogModal -->
-        <!-- DialogModal -->
-        <!-- <Dialog__custom v-model:show="Dialog_postForm__visibility">
-            <PostForm @addPost="addPost" />
-        </Dialog__custom> -->
+        <!-- addPostDialogModal -->
+        <!-- addPostDialogModal -->
+        <!-- addPostDialogModal -->
+        <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addPostModalLabel">Add post</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <InputText__custom v-model="addPostModal__title" class="mb-3" placeholder="Post title...">
+                        </InputText__custom>
+                        <div class="form-floating">
+                            <textarea v-model="addPostModal__content" class="form-control" style="height: 100px;"
+                                placeholder="Post content..." id="floatingTextarea"></textarea>
+                            <label for="floatingTextarea" class="text-muted">Post content...</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <Button__custom type="button" @click="addNewPost" data-bs-dismiss="modal">Save</Button__custom>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- PostList -->
         <!-- PostList -->
         <!-- PostList -->
@@ -78,16 +97,19 @@
 <script>
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex';
 import PostList from '@/components/PostList.vue'
-// import PostForm from '@/components/PostForm.vue'
+import Button__custom from '@/components/UI/Button__custom.vue';
+import InputText__custom from '@/components/UI/InputText__custom.vue';
 export default {
     name: 'App',
     components: {
         PostList,
-        // PostForm,
+        Button__custom,
+        InputText__custom
     },
     data() {
         return {
-            Dialog_postForm__visibility: false,
+            addPostModal__title: '',
+            addPostModal__content: ''
         }
     },
     computed: {
@@ -135,18 +157,19 @@ export default {
         }),
         ...mapActions({
             fetchPosts: 'posts/fetchPosts',
-            fetchPostsBand: 'posts/fetchPostsBand'
-        })
-        //     addPost(post) {
-        //         this.posts.unshift(post);
-        //         this.Dialog_postForm__visibility = false
-        //     },
-        //     removePost(post) {
-        //         this.posts = this.posts.filter((i) => i.id !== post.id)
-        //     },
-        //     showDialog__PostForm() {
-        //         this.Dialog_postForm__visibility = !this.Dialog_postForm__visibility
-        //     },
+            fetchPostsBand: 'posts/fetchPostsBand',
+            addPostToStore: 'posts/addPostToStore'
+        }),
+        addNewPost() {
+            const newPost = {
+                id: Date.now(),
+                title: this.addPostModal__title,
+                body: this.addPostModal__content
+            }
+            this.addPostToStore(newPost);
+            this.addPostModal__content = '';
+            this.addPostModal__title = '';
+        },
     },
 
 }

@@ -31,8 +31,6 @@ export const postModule = {
 					return a.body.localeCompare(b.body);
 				} else if (state.selectedSort === 'id') {
 					return a.id - b.id;
-				} else if (state.selectedSort === '') {
-					return a.id - b.id;
 				}
 			});
 		},
@@ -74,10 +72,16 @@ export const postModule = {
 		removePost(state, value) {
 			state.posts = state.posts.filter((post) => post.id !== value);
 		},
+		addPostToStore(state, value) {
+			state.posts.unshift(value);
+		},
 	},
 	actions: {
 		removePost({ commit }, id) {
 			commit('removePost', id);
+		},
+		addPostToStore({ commit }, newUsersPost) {
+			commit('addPostToStore', newUsersPost);
 		},
 		async fetchPosts({ commit, state }) {
 			commit('setPostsLoading', true);

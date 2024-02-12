@@ -26,9 +26,6 @@
                             <li>
                                 <router-link to="/posts" class="dropdown-item">Show all posts &#128196;</router-link>
                             </li>
-                            <li>
-                                <!-- <router-link to="/posts-vuex" class="dropdown-item"><i>Vuex</i></router-link> -->
-                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -43,6 +40,7 @@
                 <!-- colorMode switcher -->
                 <!-- colorMode switcher -->
                 <!-- colorMode switcher -->
+                <hr class="d-md-none">
                 <div class="mt-3 mt-md-0 d-flex flex-column align-items-center justify-content-center">
                     <input type="checkbox" id="colorMode_switcher" @click="changeColorMode" />
                     <label for="colorMode_switcher">
