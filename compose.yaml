@@ -1,11 +1,9 @@
-version: '3.1'
-
 services:
-    webserver:
-        restart: always
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: webserver
-        ports:
-            - "8081:80"
+  webserver:
+    restart: always
+    build:
+      context: .
+      dockerfile: DockerfileWebserver
+    container_name: webserver
+    ports:
+      - "8080:80"
