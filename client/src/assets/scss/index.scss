@@ -1,0 +1,20 @@
+@import "fonts.scss";
+@import "colors.scss";
+
+/* import the Bootstrap */
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+/* import other styles */
+/* some styles defined directly in components */
+@import "common.scss";
+@import "dotCube.scss";
+@import "colorModeSwitcher.scss";
+@import "mainLogo.scss";
+
+/* ------- customize Bootstrap styles via mixins -------- */
+.btn-custom-green {
+  @include button-variant($green_color_05, $green_color);
+}
+
+.btn-outline-green-custom {
+  @include button-outline-variant($green_color);
+}
