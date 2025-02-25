@@ -3,26 +3,26 @@ $faces-interval: calc(($size-cube / 2) / 5);
 $size-dot: 4px;
 $delay-anim: 0.3s;
 
+.lead {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .mod {
-  position: absolute;
-  top: 45vh;
-  left: 0px;
-  width: 100vw;
-  // min-height: 50vh;
   perspective: 330px;
   background: transparent;
-
   .project-name {
-    position: absolute;
-    width: $size-cube * 2;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     font-size: 1.25em;
     text-transform: uppercase;
     letter-spacing: 0.5em;
     line-height: 1.5em;
     text-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+    p {
+      font-size: 50px;
+      line-height: 1.5;
+    }
   }
   .cube {
     position: absolute;
