@@ -1,0 +1,26 @@
+.loading {
+  color: $green-color;
+  font-weight: 700;
+  font-size: 32px;
+  position: relative;
+  top: 10vh;
+
+  div:first-child {
+    box-shadow: 0px 0px 10px 0px $green-color;
+  }
+
+  span {
+    opacity: 0.8;
+  }
+}
+
+.observer {
+  height: 30px;
+}
+
+#noMorePosts {
+  color: $green-color;
+  font-weight: 700;
+  font-size: 32px;
+  opacity: 0.8;
+}
