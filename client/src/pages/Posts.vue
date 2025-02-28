@@ -19,8 +19,8 @@
     </div>
     <!-- posts interaction panel -->
     <div class="row">
-      <div class="d-flex justify-content-center col-10 offset-1">
-        <div class="col-md-4 col-12 mb-md-0 mb-3 px-1">
+      <div class="d-flex flex-wrap align-items-center justify-content-center">
+        <div class="d-flex justify-content-center col-md-3 col-10 mb-md-0 mb-3 px-1">
           <input
             id="searchInput"
             v-model="searchInput"
@@ -30,7 +30,7 @@
             placeholder="Search..."
           />
         </div>
-        <div class="col-md-4 col-12 mb-md-0 mb-3 px-1">
+        <div class="d-flex justify-content-center col-md-3 col-10 mb-md-0 mb-3 px-1">
           <select id="sortOptions" name="sortOptions" class="form-select" aria-label="Sort options">
             <option selected disabled>Sort options</option>
             <option value="id">by &#8470;</option>
@@ -38,7 +38,7 @@
             <option value="description">by description</option>
           </select>
         </div>
-        <div class="col-md-4 col-12 mb-md-0 mb-3 px-1">
+        <div class="d-flex justify-content-end col-md-4 col-10 mb-md-0 mb-3">
           <button class="btn btn-outline-green-custom me-1" data-bs-toggle="modal" data-bs-target="#addPostModal">
             Add new
           </button>
@@ -50,7 +50,10 @@
     <AddPostModal />
 
     <!-- posts list -->
-    <PostList v-if="!loading && posts.length" :posts="posts" />
+    <PostList v-if="posts && posts.length" :posts="posts" />
+    <div v-else-if="loadingError" class="loadingError d-flex justify-content-center align-items-center">
+      <span>{{ error }}</span>
+    </div>
     <div v-else class="loading d-flex justify-content-center align-items-center">
       <div class="spinner-grow me-3" role="status">
         <span class="visually-hidden"></span>
@@ -58,8 +61,8 @@
       <span>Loading...</span>
     </div>
     <!-- observer for dynamic posts loading -->
-    <div v-if="isMorePosts" ref="observer" class="observer"></div>
-    <div v-else id="noMorePosts" class="d-flex justify-content-center align-items-center">No more posts</div>
+    <!-- <div v-if="isMorePosts" ref="observer" class="observer"></div>
+    <div v-else id="noMorePosts" class="d-flex justify-content-center align-items-center">No more posts</div> -->
   </section>
 </template>
 
@@ -77,12 +80,14 @@ export default {
   data() {
     return {
       searchInput: "",
+      page: 1,
+      limit: 10,
     };
   },
   computed: {
     ...mapState({
       posts: (state) => state.posts.posts,
-      // posts_loading: (state) => state.posts.posts_loading,
+      loadingError: (state) => state.posts.loadingError,
       // selectedSort: (state) => state.posts.selectedSort,
       // sortOptions: (state) => state.posts.sortOptions,
       // searchInput: (state) => state.posts.searchQuery,
@@ -96,7 +101,7 @@ export default {
     }),
   },
   mounted() {
-    this.postList({ params: { _limit: 10, _page: 1 } });
+    this.postList({ _limit: this.limit, _page: this.page });
     // this.fetchPosts();
     // Dynamic posts band loading
     // Dynamic posts band loading

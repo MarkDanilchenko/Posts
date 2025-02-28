@@ -4,8 +4,7 @@ const posts = {
   namespaced: true,
   state: () => ({
     posts: [],
-
-    // posts_loading: true,
+    loadingError: null,
     // single_post: [],
     // single_post_loading: true,
     // single_post_id: null,
@@ -41,6 +40,9 @@ const posts = {
   mutations: {
     setPosts(state, posts) {
       state.posts = posts;
+    },
+    setLoadingError(state, loadingError) {
+      state.loadingError = loadingError;
     },
     // setPostsLoading(state, value) {
     //   state.posts_loading = value;
@@ -85,14 +87,13 @@ const posts = {
           },
           params,
         });
-        console.log("🚀 ~ postList ~ response:", response);
 
         // commit("setTotalPages", Math.ceil(response.headers["x-total-count"] / state.limit));
 
         commit("setPosts", [...state.posts, ...response.data]);
       } catch (error) {
         commit("setPosts", []);
-        alert(error.message);
+        commit("setLoadingError", error.message);
       }
     },
 
