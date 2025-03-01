@@ -13,7 +13,7 @@
         <hr class="d-md-none d-inline-block" />
         <div class="d-flex justify-content-end align-items-end col-md-4 col-12">
           <button class="btn btn-outline-green-custom me-2" @click="$router.push(`/posts/${post.id}`)">More</button>
-          <button class="btn btn-outline-danger" @click="">Delete</button>
+          <button class="btn btn-outline-danger" @click="deletePost(post.id)">Delete</button>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "PostItem",
@@ -31,10 +31,9 @@ export default {
       required: true,
     },
   },
-  computed: {},
   methods: {
     ...mapActions({
-      // removePost: "posts/removePost",
+      deletePost: "posts/deletePost",
     }),
   },
 };

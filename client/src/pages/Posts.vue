@@ -76,7 +76,7 @@
         <span>{{ loadingError }}</span>
       </div>
       <div
-        v-else-if="posts && !filteredAndSortedPosts.length"
+        v-else-if="posts.length && !filteredAndSortedPosts.length"
         class="postsNotFound d-flex justify-content-center align-items-center"
       >
         Posts not found &#128577;

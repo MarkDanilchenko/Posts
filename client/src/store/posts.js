@@ -97,6 +97,13 @@ const posts = {
       }
     },
 
+    deletePost({ commit, state }, id) {
+      commit(
+        "setPosts",
+        state.posts.filter((post) => post.id !== id)
+      );
+    },
+
     // removePost({ commit }, id) {
     //   commit("removePost", id);
     // },
