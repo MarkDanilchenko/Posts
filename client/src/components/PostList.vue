@@ -2,7 +2,7 @@
   <section class="my-postList">
     <div class="row">
       <div class="d-flex justify-content-center">
-        <div class="col-lg-8 col-md-10 col-12">
+        <div class="col-md-11 offset-md-1 col-12">
           <transition-group name="postList" tag="div">
             <PostItem v-for="post in posts" :key="post.id" :post="post" />
           </transition-group>

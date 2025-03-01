@@ -4,11 +4,9 @@
   font-size: 32px;
   position: relative;
   top: 10vh;
-
   div:first-child {
     box-shadow: 0px 0px 10px 0px $green-color;
   }
-
   span {
     opacity: 0.8;
   }
@@ -16,20 +14,20 @@
 
 .loadingError {
   color: $red_color;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 32px;
   position: relative;
   top: 10vh;
+  opacity: 0.8;
 }
 
-.observer {
-  height: 30px;
-}
-
+.postsNotFound,
 #noMorePosts {
-  color: $green-color;
-  font-weight: 700;
+  color: $white-color;
+  font-weight: 500;
   font-size: 32px;
+  position: relative;
+  top: 10vh;
   opacity: 0.8;
 }
 
@@ -38,7 +36,26 @@
   button {
     width: 120px;
   }
-  button:last-of-type {
+  button:first-of-type:hover {
     box-shadow: 0px 0px 10px 1px $green-color;
   }
+}
+
+#limit {
+  max-width: 20%;
+}
+
+#sortDirection {
+  button {
+    border: 1px solid $green-color_05;
+    color: $grey-color;
+  }
+  button:hover {
+    border: 1px solid $green-color;
+    color: $green-color;
+  }
+}
+
+.observer {
+  height: 30px;
 }

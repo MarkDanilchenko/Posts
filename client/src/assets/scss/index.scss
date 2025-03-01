@@ -1,6 +1,15 @@
 @import "fonts.scss";
 @import "colors.scss";
 
+/* ------- customize Bootstrap -------- */
+$form-select-border-color: $green_color_05;
+$form-select-focus-box-shadow: 0 0 0 0.15rem $green_color_05;
+$form-select-focus-border-color: $green_color;
+
+$input-border-color: $green_color_05;
+$input-focus-box-shadow: 0 0 0 0.15rem $green_color_05;
+$input-focus-border-color: $green_color;
+
 /* import the Bootstrap */
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
 /* import other styles */

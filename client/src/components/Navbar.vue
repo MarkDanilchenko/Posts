@@ -41,7 +41,9 @@
               >
             </li>
           </ul>
-          <span class="navbar-text text-small me-3 d-md-inline-block d-none"> Vue3 tutorial =&#41; </span>
+          <span class="navbar-text text-small me-3 d-md-inline-block d-none">
+            Vue3 tutorial <span class="text-green">=&#41;</span>
+          </span>
           <hr class="d-md-none" />
           <div class="mt-3 mt-md-0 d-flex flex-column align-items-center justify-content-center">
             <input id="colorMode_switcher" type="checkbox" @click="changeColorMode" />
