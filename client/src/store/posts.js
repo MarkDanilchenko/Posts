@@ -4,16 +4,17 @@ const posts = {
   namespaced: true,
   state: () => ({
     posts: [],
+    post: {},
     loadingError: null,
     postsCount: 0,
-    // single_post: [],
-    // single_post_loading: true,
-    // single_post_id: null,
   }),
   getters: {},
   mutations: {
     setPosts(state, posts) {
       state.posts = posts;
+    },
+    setPost(state, post) {
+      state.post = post;
     },
     setLoadingError(state, loadingError) {
       state.loadingError = loadingError;
@@ -21,15 +22,6 @@ const posts = {
     setPostsCount(state, postsCount) {
       state.postsCount = postsCount;
     },
-    // setSinglePost(state, value) {
-    //   state.single_post = value;
-    // },
-    // setSinglePostLoading(state, value) {
-    //   state.single_post_loading = value;
-    // },
-    // setSinglePostId(state, value) {
-    //   state.single_post_id = value;
-    // },
   },
   actions: {
     async postList({ state, commit }, params) {
@@ -41,8 +33,9 @@ const posts = {
           params,
         });
 
-        commit("setPostsCount", response.headers["x-total-count"]);
         commit("setPosts", [...state.posts, ...response.data]);
+        commit("setPostsCount", response.headers["x-total-count"]);
+        commit("setLoadingError", null);
       } catch (error) {
         commit("setPosts", []);
         commit("setPostsCount", 0);
@@ -55,48 +48,26 @@ const posts = {
         state.posts.filter((post) => post.id !== id)
       );
     },
-    async postItem({ state, commit }) {},
-    // async fetchPostItem({ commit, state }) {
-    //   setTimeout(() => {
-    //     if (state.single_post_id <= 100) {
-    //       fetch("https://jsonplaceholder.typicode.com/posts/" + state.single_post_id, {
-    //         method: "GET",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: null,
-    //       })
-    //         .then((response) => {
-    //           if (response.status === 404) {
-    //             commit("setSinglePost", null);
-    //             commit("setSinglePostLoading", false);
-    //             return;
-    //           }
-    //           return response.json();
-    //         })
-    //         .then((data) => {
-    //           commit("setSinglePost", data);
-    //           commit("setSinglePostLoading", false);
-    //         })
-    //         .catch((error) => {
-    //           alert(error.message);
-    //         });
-    //     } else {
-    //       const IDs = [];
-    //       state.posts.forEach((post) => {
-    //         IDs.push(post.id);
-    //       });
-    //       if (IDs.includes(state.single_post_id)) {
-    //         commit("setSinglePost", state.posts.filter((post) => post.id == state.single_post_id)[0]);
-    //         commit("setSinglePostLoading", false);
-    //       } else {
-    //         commit("setSinglePost", null);
-    //         commit("setSinglePostLoading", false);
-    //         return;
-    //       }
-    //     }
-    //   }, 1000);
-    // },
+    async postItem({ state, commit }, id) {
+      try {
+        const postInStore = state.posts.find((post) => post.id === id);
+        if (postInStore) {
+          commit("setPost", postInStore);
+          commit("setLoadingError", null);
+        } else {
+          const response = await axios.get("https://jsonplaceholder.typicode.com/posts/" + id, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          commit("setPost", response.data);
+          commit("setLoadingError", null);
+        }
+      } catch (error) {
+        commit("setPost", {});
+        commit("setLoadingError", error.message);
+      }
+    },
   },
 };
 

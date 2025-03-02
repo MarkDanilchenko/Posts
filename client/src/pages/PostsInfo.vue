@@ -1,103 +1,65 @@
 <template>
-  <section class="my-postItemInfo">
-    <div v-if="single_post_loading" class="postPage__loading d-flex justify-content-center align-items-center">
-      <div class="spinner-grow me-3" role="status">
-        <span class="visually-hidden">Loading...</span>
+  <section class="my-postsInfo">
+    <div v-if="Object.keys(post).length">
+      <div class="row">
+        <div
+          class="d-flex flex-column justify-content-center align-items-center col-md-10 col-12 offset-md-1 rounded-3 p-3 mt-5"
+        >
+          <div class="d-flex flex-column col-12 align-items-start mb-3">
+            <div><b>Title:</b> "{{ post.title }}"</div>
+            <br />
+            <div>
+              <b>Description:</b> <br />
+              <p>{{ post.body }}</p>
+            </div>
+          </div>
+          <button class="btn btn-outline-secondary mb-3" @click="$router.push('/posts')">Back</button>
+          <hr class="my-1" style="width: 75%" />
+          <p>
+            Visit
+            <a href="https://jsonplaceholder.typicode.com" class="nav-link" style="display: inline" alt="" title=""
+              >here</a
+            >
+            to find out more information about these posts
+          </p>
+        </div>
       </div>
-      <div>
+    </div>
+    <div v-else>
+      <div v-if="loadingError" class="loadingError d-flex flex-column justify-content-center align-items-center">
+        <span>Ooops... {{ loadingError }}</span>
+        <button class="btn mt-3 btn-outline-green-custom" @click="$router.push('/posts')">Back</button>
+      </div>
+      <div v-else class="loading d-flex justify-content-center align-items-center">
+        <div class="spinner-grow me-3" role="status">
+          <span class="visually-hidden"></span>
+        </div>
         <span>Loading...</span>
       </div>
-    </div>
-    <div v-if="single_post" class="postPage__details d-flex flex-column mt-5 p-3 rounded-3">
-      <h5><b>ID:</b> №{{ single_post.id }}</h5>
-      <h5 class="text-center"><b>Title:</b> "{{ single_post.title }}"</h5>
-      <h5>
-        <b>Description:</b> <br />
-        <span class="text-small">{{ postDescriptionStartsWithCapital }}</span>
-      </h5>
-      <hr />
-      <p v-if="single_post.id <= 100" class="text-center text-small text-muted mb-0">
-        All information about this post is available on the https://jsonplaceholder.typicode.com
-      </p>
-      <div class="d-flex justify-content-end">
-        <Button__custom class="mt-3" @click="$router.push('/posts')">Back</Button__custom>
-      </div>
-    </div>
-    <div
-      v-if="!single_post_loading && !single_post"
-      class="postPage__notFound text-center d-flex justify-content-center flex-column align-items-center"
-    >
-      <div>
-        <span class="text-green">404</span> <br />
-        The post You are looking for <span class="text-green">does not exist</span>.
-      </div>
-      <Button__custom class="mt-3" @click="$router.push('/posts')">Back</Button__custom>
     </div>
   </section>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "PostsDetails",
-  data() {
-    return {};
-  },
+  name: "PostsInfo",
   computed: {
     ...mapState({
-      single_post: (state) => state.posts.single_post,
-      single_post_loading: (state) => state.posts.single_post_loading,
-      single_post_id: (state) => state.posts.single_post_id,
+      post: (state) => state.posts.post,
+      loadingError: (state) => state.posts.loadingError,
     }),
-    postDescriptionStartsWithCapital() {
-      if (this.single_post.body) {
-        return this.single_post.body.charAt(0).toUpperCase() + this.single_post.body.slice(1);
-      }
-    },
   },
-  mounted() {
-    this.setSinglePostId(Number(this.$route.params.id));
-    this.setSinglePostLoading(true);
-    this.setSinglePost(null);
-    this.fetchPostItem();
+  async mounted() {
+    await this.postItem(this.$route.params.id);
   },
   methods: {
-    ...mapMutations({
-      setSinglePostId: "posts/setSinglePostId",
-      setSinglePost: "posts/setSinglePost",
-      setSinglePostLoading: "posts/setSinglePostLoading",
-    }),
     ...mapActions({
-      fetchPostItem: "posts/fetchPostItem",
+      postItem: "posts/postItem",
     }),
   },
 };
 </script>
 
-<style scoped lang="scss">
-@import "@/assets/scss/colors.scss";
-
-.postPage__loading {
-  color: $green-color;
-  font-weight: 700;
-  font-size: 32px;
-  position: relative;
-  top: 40vh;
-
-  div:first-child {
-    box-shadow: 0px 0px 10px 0px $green-color;
-  }
-}
-
-.postPage__notFound {
-  font-weight: 700;
-  font-size: 32px;
-  position: relative;
-  top: 40vh;
-}
-
-.postPage__details {
-  box-shadow: 0px 0px 10px 1px $green-color;
-}
-</style>
+<style scoped lang="scss"></style>
