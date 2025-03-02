@@ -13,8 +13,8 @@ const routes = [
   },
   {
     path: "/posts/:id",
-    name: "postsDetails",
-    component: () => import("@/pages/PostsDetails.vue"),
+    name: "postsInfo",
+    component: () => import("@/pages/PostsInfo.vue"),
   },
   {
     path: "/about",

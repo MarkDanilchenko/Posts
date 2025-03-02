@@ -38,7 +38,7 @@
             aria-label="Sort options"
             @change="sortOption = $event.target.value"
           >
-            <option disabled selected>Sort by</option>
+            <option disabled selected value="">Sort by</option>
             <option value="title">Title</option>
             <option value="contentSize">Content size</option>
           </select>
@@ -48,13 +48,7 @@
           </div>
         </div>
         <div class="d-flex justify-content-end col-md-5 col-10 mb-md-0 mb-3">
-          <select
-            id="limit"
-            name="limit"
-            class="form-select me-1"
-            aria-label="Limit options"
-            @change="limit = $event.target.value"
-          >
+          <select id="limit" name="limit" class="form-select me-1" aria-label="Limit options" @change="changeLimit">
             <option disabled>Limit</option>
             <option value="5">5</option>
             <option value="10" default selected>10</option>
@@ -89,13 +83,17 @@
       </div>
     </div>
     <!-- observer for dynamic posts loading -->
-    <!-- <div v-if="isMorePosts" ref="observer" class="observer"></div>
-    <div v-else id="noMorePosts" class="d-flex justify-content-center align-items-center">No more posts</div> -->
+    <div v-if="posts.length">
+      <div v-if="isMorePosts" ref="observer" class="observer"></div>
+      <div v-else id="noMorePosts" class="d-flex justify-content-center align-items-center">
+        No more posts for downloading &#128577;
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import PostList from "@/components/PostList.vue";
 import AddPostModal from "@/components/AddPostModal.vue";
 
@@ -117,17 +115,8 @@ export default {
   computed: {
     ...mapState({
       posts: (state) => state.posts.posts,
+      postsCount: (state) => state.posts.postsCount,
       loadingError: (state) => state.posts.loadingError,
-      // selectedSort: (state) => state.posts.selectedSort,
-      // sortOptions: (state) => state.posts.sortOptions,
-      // searchInput: (state) => state.posts.searchQuery,
-      // page: (state) => state.posts.page,
-      // limit: (state) => state.posts.limit,
-      // totalPages: (state) => state.posts.totalPages,
-      // postsEnd: (state) => state.posts.postsEnd,
-    }),
-    ...mapGetters({
-      // postSortAndSearch: "posts/postSortAndSearch",
     }),
     filteredAndSortedPosts() {
       const convertedPosts = [...this.posts]
@@ -150,40 +139,28 @@ export default {
 
       return this.sortDirection === "asc" ? convertedPosts : convertedPosts.reverse();
     },
+    isMorePosts() {
+      const totalPages = Math.ceil(this.postsCount / this.limit);
+
+      return this.page <= totalPages;
+    },
   },
-  mounted() {
-    this.postList({ _limit: this.limit, _page: this.page });
-    // this.fetchPosts();
-    // Dynamic posts band loading
-    // Dynamic posts band loading
-    // Dynamic posts band loading
-    // const options = {
-    //   root: null,
-    //   rootMargin: "0px",
-    //   threshold: 1.0,
-    // };
-    // const observer = new IntersectionObserver((entries) => {
-    //   if (entries[0].isIntersecting && this.page < this.totalPages) {
-    //     this.setPage(this.page + 1);
-    //     this.fetchPostsBand();
-    //   } else if (this.page === this.totalPages) {
-    //     this.setPostsEnd(true);
-    //   }
-    // });
-    // observer.observe(this.$refs.observer);
+  async mounted() {
+    await this.postList({ _limit: this.limit, _page: this.page });
+
+    // observer for dynamic posts loading
+    const observer = new IntersectionObserver(async (entries) => {
+      if (entries[0].isIntersecting) {
+        console.log(new Date());
+        this.page += 1;
+        await this.postList({ _limit: this.limit, _page: this.page });
+      }
+    });
+    if (this.$refs.observer) observer.observe(this.$refs.observer);
   },
   methods: {
-    ...mapMutations({
-      // setPage: "posts/setPage",
-      // setPostsEnd: "posts/setPostsEnd",
-      // setSearchQuery: "posts/setSearchQuery",
-      // setSelectedSort: "posts/setSelectedSort",
-    }),
     ...mapActions({
       postList: "posts/postList",
-      // fetchPosts: "posts/fetchPosts",
-      // fetchPostsBand: "posts/fetchPostsBand",
-      // addPostToStore: "posts/addPostToStore",
     }),
     async reset() {
       this.page = 1;
@@ -191,19 +168,18 @@ export default {
       this.searchInput = "";
       this.sortOption = "";
       this.sortDirection = "asc";
+      $("#searchInput").val("");
+      $("#sortOptions").val("");
+      $("#limit").val("10");
 
       return this.postList({ _limit: this.limit, _page: this.page });
     },
-    // addNewPost() {
-    //   const newPost = {
-    //     id: Date.now(),
-    //     title: this.addPostModal__title,
-    //     body: this.addPostModal__content,
-    //   };
-    //   this.addPostToStore(newPost);
-    //   this.addPostModal__content = "";
-    //   this.addPostModal__title = "";
-    // },
+    async changeLimit(event) {
+      this.limit = event.target.value;
+      this.page = 1;
+
+      return this.postList({ _limit: this.limit, _page: this.page });
+    },
   },
 };
 </script>
