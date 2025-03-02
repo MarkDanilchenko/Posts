@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   name: "PostsInfo",
@@ -51,12 +51,18 @@ export default {
       loadingError: (state) => state.posts.loadingError,
     }),
   },
+  beforeUnmount() {
+    this.setLoadingError(null);
+  },
   async mounted() {
     await this.postItem(this.$route.params.id);
   },
   methods: {
     ...mapActions({
       postItem: "posts/postItem",
+    }),
+    ...mapMutations({
+      setLoadingError: "posts/setLoadingError",
     }),
   },
 };

@@ -64,7 +64,9 @@
     <!-- #addPostModal -->
     <AddPostModal />
     <!-- posts list -->
-    <PostList v-if="filteredAndSortedPosts.length" :posts="filteredAndSortedPosts" />
+    <div v-if="filteredAndSortedPosts.length">
+      <PostList :posts="filteredAndSortedPosts" />
+    </div>
     <div v-else class="row">
       <div v-if="loadingError" class="loadingError d-flex justify-content-center align-items-center">
         <span>Ooops... {{ loadingError }}</span>
@@ -83,9 +85,9 @@
       </div>
     </div>
     <!-- observer for dynamic posts loading -->
-    <div v-if="posts.length">
-      <div v-if="isMorePosts" ref="observer" class="observer"></div>
-      <div v-else id="noMorePosts" class="d-flex justify-content-center align-items-center">
+    <div v-show="posts.length">
+      <div v-show="isMorePosts" ref="observer" class="observer"></div>
+      <div v-if="!isMorePosts" id="noMorePosts" class="d-flex justify-content-center align-items-center">
         No more posts for downloading &#128577;
       </div>
     </div>
@@ -93,7 +95,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import PostList from "@/components/PostList.vue";
 import AddPostModal from "@/components/AddPostModal.vue";
 
@@ -119,6 +121,10 @@ export default {
       loadingError: (state) => state.posts.loadingError,
     }),
     filteredAndSortedPosts() {
+      if (!this.posts.length) {
+        return [];
+      }
+
       const convertedPosts = [...this.posts]
         .sort((a, b) => {
           if (this.sortOption === "title") {
@@ -145,13 +151,15 @@ export default {
       return this.page <= totalPages;
     },
   },
+  beforeUnmount() {
+    this.setLoadingError(null);
+  },
   async mounted() {
     await this.postList({ _limit: this.limit, _page: this.page });
 
     // observer for dynamic posts loading
     const observer = new IntersectionObserver(async (entries) => {
       if (entries[0].isIntersecting) {
-        console.log(new Date());
         this.page += 1;
         await this.postList({ _limit: this.limit, _page: this.page });
       }
@@ -162,7 +170,12 @@ export default {
     ...mapActions({
       postList: "posts/postList",
     }),
-    async reset() {
+    ...mapMutations({
+      setLoadingError: "posts/setLoadingError",
+      setPosts: "posts/setPosts",
+    }),
+    reset() {
+      this.setPosts([]);
       this.page = 1;
       this.limit = 10;
       this.searchInput = "";
@@ -174,9 +187,10 @@ export default {
 
       return this.postList({ _limit: this.limit, _page: this.page });
     },
-    async changeLimit(event) {
-      this.limit = event.target.value;
+    changeLimit(event) {
+      this.setPosts([]);
       this.page = 1;
+      this.limit = event.target.value;
 
       return this.postList({ _limit: this.limit, _page: this.page });
     },
