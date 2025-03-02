@@ -73,7 +73,7 @@
     <PostList v-if="filteredAndSortedPosts.length" :posts="filteredAndSortedPosts" />
     <div v-else class="row">
       <div v-if="loadingError" class="loadingError d-flex justify-content-center align-items-center">
-        <span>{{ loadingError }}</span>
+        <span>Ooops... {{ loadingError }}</span>
       </div>
       <div
         v-else-if="posts.length && !filteredAndSortedPosts.length"
@@ -188,6 +188,9 @@ export default {
     async reset() {
       this.page = 1;
       this.limit = 10;
+      this.searchInput = "";
+      this.sortOption = "";
+      this.sortDirection = "asc";
 
       return this.postList({ _limit: this.limit, _page: this.page });
     },
