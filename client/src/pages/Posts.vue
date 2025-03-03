@@ -30,6 +30,9 @@
             type="text"
             name="searchInput"
             placeholder="Search..."
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            data-bs-title="Searching by title"
           />
           <select
             id="sortOptions"
@@ -38,7 +41,8 @@
             aria-label="Sort options"
             @change="sortOption = $event.target.value"
           >
-            <option disabled selected value="">Sort by</option>
+            <option disabled value="">Sort by</option>
+            <option selected value="">Default</option>
             <option value="title">Title</option>
             <option value="contentSize">Content size</option>
           </select>
@@ -98,6 +102,7 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 import PostList from "@/components/PostList.vue";
 import AddPostModal from "@/components/AddPostModal.vue";
+import { Tooltip } from "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 export default {
   name: "Posts",
@@ -155,6 +160,11 @@ export default {
     this.setLoadingError(null);
   },
   async mounted() {
+    // tooltips init
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl));
+
+    // posts loading
     await this.postList({ _limit: this.limit, _page: this.page });
 
     // observer for dynamic posts loading
