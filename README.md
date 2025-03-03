@@ -1,75 +1,114 @@
-## Description
+## App Description &#128209;
 
-Used technologies:
+This is a simple frontend project based on using such technologies as: Vue3, Bootstrap5, Webpack, NGINX and Docker.
 
-- VueJS (Vue3);
+## Launch instructions &#128190;
+
+&#9881;**Frontend**:
+
+- Vue3;
 - Bootstrap5;
-- Webpack;
-- Docker and docker compose;
-- NGINX;
-- CSS/SCSS/HTML.
+- Webpack + prettier + eslint.
 
-## Launch instructions
+&#9881;**Backend**:
 
-1. Clone/pull repository to your local project folder;
+- Docker;
+- NGINX.
 
-2. For this step you should already have installed Docker and docker compose on your PC:
+<div style="display: flex; justify-content: end;">
+  <p>Git and Docker should be installed locally on Your PC.</p>
+</div>
 
-- make sure You are in local project folder:
+---
 
-  ```
-  cd '.../project_folder'
-  ```
+1. Clone repository to Your local path:
 
-- Run docker compose:
-
-  ```
-  docker compose up --build
-  ```
-
-- Installation can take some time, it depends on your PC resources;
-- After the installation is completed, the NGINX-server will start automatically at host:port - **127.0.0.1:8081**;
-- Open app using <http://127.0.0.1:8081/> in your browser;
-
-3. Note, that there is no DataBase in the project;
-
-4. To stop the NGINX-server press in terminal:
-
+    ```sh
+    cd <your_local_path> && git clone <http/ssh-link>
     ```
+
+2. Run compose:
+
+    ```sh
+    cd Posts && docker compose --env-file ./.env.public up --build    
+    ```
+
+3. After the installation is complete the web-app will start on `localhost:8080`;
+
+- Open web-app in browser using URL: <http://localhost:8080/>
+
+4. Stop the web-app press in current terminal:
+
+    ```sh
     Ctrl + C
     ```
 
-5. To completely remove all created docker containers, images and volumes:
+    or
 
-   ```
-   docker-compose down --volumes
-   ```
+    ```sh
+    docker compose --env-file ./.env.public stop
+    ```
 
-### Screenshots
+5. Start again the web-app:
 
-1. *Main page (white & dark themes)*
+    ```sh
+    docker compose --env-file ./.env.public start
+    ```
 
-![Main page(white theme)](screenshots/ScrShot_2.png)
-![Main page(dark theme)](screenshots/ScrShot_1.png)
+6. To completely remove all related docker containers, docker images, volumes and related data:
 
-2. *Main posts page and dynamic search*
+    ```sh
+    docker compose --env-file ./.env.public down --volumes --rmi all
+    ```
 
-![Main page & dynamic search](screenshots/ScrShot_3.png)
+    <span style="color: rgb(255, 0, 0)">After this step, it is need to go back to point №2 to run web-app again.</span>
 
-3. *Three sort options*
+---
 
-![Sort options](screenshots/ScrShot_4.png)
+### p.s
 
-4. *Add Your own new posts with modal*
-![Add new post: modal](screenshots/ScrShot_5.png)
+- Outer port of nginx is `8080` and could not be changed via environment.
 
-5. *Post detailed info*
-![Post detailed info](screenshots/ScrShot_6.png)
+## Screenshots &#127745;
 
-6. *Mobile look like*
+1. Main page (light & dark themes)
 
 <div align="center">
-  <img src="screenshots/ScrShot_7.png" width="50%" height="50%" alt='Mobile look 1'>
-  <img src="screenshots/ScrShot_8.png" width="50%" height="50%" alt='Mobile look 2'>
-  <img src="screenshots/ScrShot_9.png" width="50%" height="50%" alt='Mobile look 3'>
+  <img src="./client/screenshots/ScreenShot_2.png" width="75%" heigth="75%" alt="Main page">
+  <img src="./client/screenshots/ScreenShot_1.png" width="75%" heigth="75%" alt="Main page">
 </div>
+  
+2. Posts page with content
+
+<div align="center">
+  <img src="./client/screenshots/ScreenShot_3.png" width="75%" heigth="75%" alt="Tutorials page">
+</div>
+
+3. Add new post modal on page with content
+
+<div align="center">
+  <img src="./client/screenshots/ScreenShot_4.png" width="75%" heigth="75%" alt="Tutorials page">
+</div>
+
+4. About and post's info pages
+
+<div align="center">
+  <img src="./client/screenshots/ScreenShot_5.png" width="75%" heigth="75%" alt="Create page">
+  <img src="./client/screenshots/ScreenShot_6.png" width="75%" heigth="75%" alt="Update page">
+</div>
+
+5. Mobile look page
+
+<div align="center">
+  <img src="./client/screenshots/ScreenShot_7.png" width="50%" heigth="50%" alt="Main page. Mobile">
+</div>
+
+6. 404 not found page
+
+<div align="center">
+  <img src="./client/screenshots/ScreenShot_8.png" width="75%" heigth="75%" alt="Not found page">
+</div>
+
+<br>
+
+---
